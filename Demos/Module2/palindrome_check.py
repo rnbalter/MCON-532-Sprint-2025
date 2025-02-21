@@ -6,7 +6,8 @@ def is_palindrome(s: str) -> bool:
         s: str: str, dubbed s
 
     Returns:
-        bool: true or false, delineating whether the given input is a palindrome once capitalization, spaces, and capitalization are ignored
+        bool: true or false, delineating whether the given input is a palindrome
+        once capitalization, spaces, and alpha numeric numbers are ignored
     """
     s = s.lower()
     forward = []
