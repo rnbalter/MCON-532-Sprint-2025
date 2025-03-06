@@ -16,7 +16,6 @@ def makeRequestAPI(user_input: str):
    Args:
        user_input str: string of input prompt
    """
-    global completion
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
