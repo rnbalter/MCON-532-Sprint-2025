@@ -1,0 +1,59 @@
+Part1: Create Basic Dictionary for GPA Calculation
+1234: {         "name": "Alice",         "grades": [85, 90, 88, 92, 87],         "gpa": round(sum([85, 90, 88, 92, 87]) / len([85, 90, 88, 92, 87]) / 25, 2)     }, 
+5678: {         "name": "Bob",         "grades": [78, 82, 80, 85, 79],         "gpa": round(sum([78, 82, 80, 85, 79]) / len([78, 82, 80, 85, 79]) / 25, 2)     }, 
+9101: {         "name": "Charlie",         "grades": [92, 95, 91, 89, 93],         "gpa": round(sum([92, 95, 91, 89, 93]) / len([92, 95, 91, 89, 93]) / 25, 2)     } }'
+
+
+Part2: Using Dictionary Comprehension
+students = {
+"123": {"name": "Alice", "grades": [80, 85, 90], "gpa": round(sum([80, 85, 90]) / len([80, 85, 90]) / 25, 2)}, 
+"234": {"name": "Bob", "grades": [75, 80, 85], "gpa": round(sum([75, 80, 85]) / len([75, 80, 85]) / 25, 2)}, 
+"345": {"name": "Charlie", "grades": [85, 90, 95], "gpa": round(sum([85, 90, 95]) / len([85, 90, 95]) / 25, 2)} }  
+
+# Using dictionary comprehension 
+student_ids = ["123", "234", "345"] 
+
+student_data = {sid: {"name": students[sid]["name"], "grades": students[sid]["grades"], "gpa": students[sid]["gpa"]}
+for sid in student_ids}
+print(student_data)
+
+
+Part3: Formatting the Output for Readability
+ Create a Python dictionary using dictionary comprehension '
+ student_data = {
+ 101: {"name": "Alice", "grades": [85, 90, 92, 88], "gpa": round(sum([85, 90, 92, 88]) / len([85, 90, 92, 88]) / 25, 2)}, 
+ 102: {"name": "Bob", "grades": [78, 82, 80, 85], "gpa": round(sum([78, 82, 80, 85]) / len([78, 82, 80, 85]) / 25, 2)}, 
+ 103: {"name": "Charlie", "grades": [92, 94, 90, 88], "gpa": round(sum([92, 94, 90, 88]) / len([92, 94, 90, 88]) / 25, 2)} }  
+ for student_id, student_info in student_data.items(): 
+ print(f"Student ID: {student_id}") 
+ print(f"Name: {student_info[\'name\']}") 
+ print(f"Grades: {student_info[\'grades\']}") 
+ print(f"GPA: {student_info[\'gpa\']}") 
+ print()'
+
+
+
+Part4: Generating Unit Tests with Coverage
+ student_data = {
+ 1: {"name": "Alice", "grades": [85, 90, 88], "gpa": round(sum([85, 90, 88])/len([85, 90, 88])/25, 2)},
+ 2: {"name": "Bob", "grades": [75, 80, 82], "gpa": round(sum([75, 80, 82])/len([75, 80, 82])/25, 2)},      
+ 3: {"name": "Charlie", "grades": [90, 95, 92], "gpa": round(sum([90, 95, 92])/len([90, 95, 92])/25, 2)}  } 
+    
+ import unittest    
+ 
+ class Test  student_data(unittest.TestCase):        
+    def test_num_  student_data(self):          
+        self.assertEqual(len(  student_data), 3)     
+           
+    def test_student_keys(self):          
+    for student_id, student_info in   student_data.items():              
+        self.assertIn("name", student_info)              
+        self.assertIn("grades", student_info)              
+        self.assertIn("gpa", student_info)     
+           
+    def test_grades_type(self):          
+        for student_id, student_info in   student_data.items():              
+            self.assertTrue(all(isinstance(grade, int) for grade in student_info["grades"]))    
+ 
+ if __name__ == "__main__":    
+ unittest.main()
