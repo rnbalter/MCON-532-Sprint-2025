@@ -45,7 +45,6 @@ def display_info(result):
 """
     temp_f = result["current"]["temp_f"]
     humidity = result["current"]["humidity"]
-    condition = result["current"]["condition"]["text"]
     print(f"Temperature: {temp_f}°F")
     print(f"Humidity: {humidity}")
     print(f"Condition: {condition}")
