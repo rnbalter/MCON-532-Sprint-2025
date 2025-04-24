@@ -1,3 +1,5 @@
-# Default ignored files
-/shelf/
-/.idea/
+# created by virtualenv automatically
+venv/*
+src/.env
+**/.pyc
+
