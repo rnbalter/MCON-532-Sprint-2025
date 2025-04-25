@@ -1,10 +1,28 @@
+"""
+This is an exercise to learn how to interact with publicly available API directories to extract specific info
+"""
+
 import requests
 from pprint import pprint
 
 url = "http://api.weatherapi.com/v1/current.json"
 headers = {"key": "915f3e2a470f467abb5210346252603"}
 
+
+
 def handle_api(url, headers, params):
+    """
+   Creates a request to WeatherAPI from the given prompt and prints output in terminal
+
+   Args:
+       url (string): given above
+       headers (string): information needed to make request ie access key
+       parameters (string): determines which area will have its weather reported
+
+   Returns:
+       response.json (string) if the request status code is 200 ie successful
+       boolean False if API request is unsuccessful
+   """
     try:
         response = requests.get(url, headers = headers, params = params)
         if response.status_code == 200:
@@ -18,9 +36,15 @@ def handle_api(url, headers, params):
         print(f"the error that occurred: {exc}")
 
 def display_info(result):
+    """
+    Prints temperature, humidity, and weather condition information neatly
+
+    Args:
+       result (string): this is the response.json requested from hande_api()
+
+"""
     temp_f = result["current"]["temp_f"]
     humidity = result["current"]["humidity"]
-    condition = result["current"]["condition"]
     print(f"Temperature: {temp_f}°F")
     print(f"Humidity: {humidity}")
     print(f"Condition: {condition}")
