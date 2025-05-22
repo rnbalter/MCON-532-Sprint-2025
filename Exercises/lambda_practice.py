@@ -21,7 +21,8 @@ high_scores = {
     #hs: hs for scores, hs in scores.items() if (lambda score: score>75)(hs)
     #this gives "High scores: {88: 88, 91: 91}" bc i mapped it incorrectly ie order in the loop rlly matters
 }
-    #hs: filter(lambda x: x>75, hs) for hs in scores}
+high_scores = dict(filter(lambda item: item[1] > 75, scores.items()))
+#hs: filter(lambda x: x>75, hs) for hs in scores}
     #this gives the filter obj same as #1 error - why do we have to reverse the syntax order here?
 print("High scores:", high_scores)
 
