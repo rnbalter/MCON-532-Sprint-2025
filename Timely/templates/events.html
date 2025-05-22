@@ -43,6 +43,57 @@
             flex-grow: 1;
             padding: 1rem;
         }
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        ul.event-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li.event-item {
+            background-color: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .event-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .event-time {
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .event-link {
+            display: inline-block;
+            margin-top: 8px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .event-link:hover {
+            text-decoration: underline;
+        }
+
+        .attendee-list {
+            margin-top: 10px;
+            padding-left: 16px;
+        }
+
+        .attendee-list li {
+            font-size: 0.9rem;
+            color: #4b5563;
+        }
 
         #chat-history {
             flex-grow: 1;
@@ -116,11 +167,13 @@
 <body>
 
 <header>
-    <h1>Chat AI</h1>
+    <!--Chat AI</h1-->
+    <h1>Timely</h1>
     {% if user.is_authenticated %}
     <div>
         <span>Welcome, {{ user.first_name }} {{ user.last_name }}! </span>
-        <a href="/calendar/list">Events</a>
+        <a href="/">Chat</a>
+        <!--a href="/calendar/list">Events</a-->
         <a href="/logout/">Logout</a>
     </div>
     {% else %}
@@ -128,6 +181,46 @@
     {% endif %}
 </header>
 
+<main>
+    <h1>Upcoming Events</h1>
+
+    <ul class="event-list">
+        {% for event in events %}
+        <li class="event-item">
+            <div class="event-title">{{ event.summary }}</div>
+            <div class="event-time">
+                {% if event.start.dateTime %}
+                    {{ event.start.dateTime }}
+                {% elif event.start.date %}
+                    {{ event.start.date }}
+                {% else %}
+                    No start time available
+                {% endif %}
+            </div>
+
+            {% if event.htmlLink %}
+            <a href="{{ event.htmlLink }}" class="event-link" target="_blank">View on Google Calendar</a>
+            {% endif %}
+
+            {% if event.attendees %}
+            <ul class="attendee-list">
+                {% for person in event.attendees %}
+                <li>
+                    {{ person.displayName|default:person.email }}
+                    ({{ person.responseStatus|capfirst }})
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </li>
+        {% empty %}
+        <li>No upcoming events found.</li>
+        {% endfor %}
+    </ul>
+
+
+
+<script>/*
 <main>
     <div id="chat-history">
         <!-- Messages will be injected here -->
@@ -184,7 +277,8 @@
         wrapper.appendChild(bubble);
         chatHistory.appendChild(wrapper);
     }
-</script>
-
+*/</script>
+</ul>
+</main>
 </body>
 </html>

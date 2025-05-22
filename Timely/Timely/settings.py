@@ -80,24 +80,20 @@ WSGI_APPLICATION = 'Timely.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'timelydb',
+        'USER': 'postgres',
+        'PASSWORD': '1234',
+        'HOST': 'localhost',
+        'PORT': '5433',
     }
 }
+
 
 # OPEN AI API Key
 OPENAI_API_KEY=os.getenv("OPENAI_API_KEY", None)
 OPENAI_ORG_ID=os.getenv("OPENAI_ORG_ID", None)
 
-# Google Oath2 and Calendar API
-GOOGLE_CLIENT_SECRET_FILE = BASE_DIR / "credentials.json"
-GOOGLE_REDIRECT_URI = "http://localhost:8001/calendar/oauth2callback"
-
-#GOOGLE_CLIENT_SECRET_FILE = os.path.join(BASE_DIR, 'Timely/../credentials.json')
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -136,3 +132,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Google Oath2 and Calendar API
+#GOOGLE_CLIENT_SECRET_FILE = BASE_DIR / "credentials.json"
+GOOGLE_CLIENT_SECRET_FILE = os.path.join(BASE_DIR, 'credentials.json')
+GOOGLE_REDIRECT_URI = "http://localhost:8001/calendar/oauth2callback"
