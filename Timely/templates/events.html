@@ -95,61 +95,6 @@
             color: #4b5563;
         }
 
-        #chat-history {
-            flex-grow: 1;
-            overflow-y: auto;
-            background-color: white;
-            border-radius: 8px;
-            padding: 1rem;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 1rem;
-        }
-
-        .chat-message {
-            display: flex;
-            margin-bottom: 0.5rem;
-        }
-
-        .chat-message.user {
-            justify-content: flex-end;
-        }
-
-        .chat-message.ai {
-            justify-content: flex-start;
-        }
-
-        .message {
-            max-width: 70%;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-        }
-
-        .message.user {
-            background-color: #2563eb;
-            color: white;
-            text-align: right;
-        }
-
-        .message.ai {
-            background-color: #dbeafe;
-            text-align: left;
-        }
-
-        form {
-            display: flex;
-            border-top: 1px solid #ccc;
-            background-color: #f1f5f9;
-            padding: 1rem;
-        }
-
-        input[type="text"] {
-            flex-grow: 1;
-            padding: 0.5rem;
-            border: 1px solid #60a5fa;
-            border-right: none;
-            border-radius: 4px 0 0 4px;
-        }
-
         button {
             padding: 0.5rem 1rem;
             border: none;
@@ -167,13 +112,11 @@
 <body>
 
 <header>
-    <!--Chat AI</h1-->
     <h1>Timely</h1>
     {% if user.is_authenticated %}
     <div>
-        <span>Welcome, {{ user.first_name }} {{ user.last_name }}! </span>
+        <span>Welcome, {{ user.first_name }} {{ user.last_name }} :) </span>
         <a href="/">Chat</a>
-        <!--a href="/calendar/list">Events</a-->
         <a href="/logout/">Logout</a>
     </div>
     {% else %}
@@ -190,11 +133,11 @@
             <div class="event-title">{{ event.summary }}</div>
             <div class="event-time">
                 {% if event.start.dateTime %}
-                    {{ event.start.dateTime }}
+                {{ event.start.dateTime }}
                 {% elif event.start.date %}
-                    {{ event.start.date }}
+                {{ event.start.date }}
                 {% else %}
-                    No start time available
+                No start time available
                 {% endif %}
             </div>
 
@@ -217,68 +160,6 @@
         <li>No upcoming events found.</li>
         {% endfor %}
     </ul>
-
-
-
-<script>/*
-<main>
-    <div id="chat-history">
-        <!-- Messages will be injected here -->
-    </div>
-
-    <form method="POST" id="chat-form">
-        {% csrf_token %}
-        <input id="chat-input" type="text" placeholder="Type your message here..." required />
-        <button type="submit">Send</button>
-    </form>
-</main>
-
-<script>
-    const chatForm = document.getElementById('chat-form');
-    const chatInput = document.getElementById('chat-input');
-    const chatHistory = document.getElementById('chat-history');
-
-    chatForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const message = chatInput.value.trim();
-        if (!message) return;
-
-        appendMessage('user', message);
-        chatInput.value = '';
-
-        fetch('response', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({
-                'csrfmiddlewaretoken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                'message': message
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                appendMessage('ai', data.response || 'No response.');
-            })
-            .catch(error => {
-                console.error('Fetch error:', error);
-                appendMessage('ai', 'Error getting response.');
-            });
-
-        chatHistory.scrollTop = chatHistory.scrollHeight;
-    });
-
-    function appendMessage(role, text) {
-        const wrapper = document.createElement('div');
-        wrapper.className = `chat-message ${role}`;
-
-        const bubble = document.createElement('div');
-        bubble.className = `message ${role}`;
-        bubble.textContent = text;
-
-        wrapper.appendChild(bubble);
-        chatHistory.appendChild(wrapper);
-    }
-*/</script>
-</ul>
 </main>
 </body>
 </html>

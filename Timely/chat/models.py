@@ -21,7 +21,7 @@ class CalendarEvent(models.Model):
     event_start = models.DateTimeField()  # Timestamp for the event's start time
     created_at = models.DateTimeField(auto_now_add=True)
     summary = models.TextField(default="")
-    #embedding = ArrayField(models.FloatField(), blank = True, null = True)
+    embedding = ArrayField(models.FloatField(), blank = True, null = True)
 
 
     def __str__(self):

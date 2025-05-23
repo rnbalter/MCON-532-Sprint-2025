@@ -58,10 +58,20 @@ def response(request):
         message = request.POST.get("message", "")
         if not message:
             return JsonResponse({'response': 'No message provided.'}, status=400)
-        # Generate a response using OpenAI's chat completion API
+        query_embedding = embed_text(message)
+        user = request.user
+        # Retrieve past events with embeddings
+        relevant_context = get_relevant_events(user, query_embedding)
         upcoming_events = get_combined_event_data_for_assistant(
             request.user
         )
+        #Retrieve last 5 ChatMessages for history
+        history = ChatMessage.objects.filter(user=user).order_by('-created_at')[:5][::-1]
+        history_prompt = "\n".join([f"User: {m.message}\nAI: {m.response}" for m in history])
+
+        prompt = f"{history_prompt}\n\nContext:\n{relevant_context}\n\nUser: {message}\nAI:"
+
+        # Generate a response using OpenAI's chat completion API
         completion = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
@@ -257,36 +267,27 @@ def list_events(request):
 
     for event in events:
         start_str = event.get('start', {}).get('dateTime') or event.get('start', {}).get('date')
-        # print(f"Debugging start_str: {start_str} (Type: {type(start_str)})")
-        # if start_str.endswith('Z'):
-        #     start_str = start_str[:-1] + '+00:00'
-        #start_str = datetime.strptime(start_str, "%Y-%m-%d")
-
         summary = event.get("summary")
         if start_str:
             try:
-                #event_start = datetime.fromisoformat(start_str)
-                event_start = dateutil.parser.parse(start_str)
-                #event_start_str = event_start.strftime("%Y-%m-%d %H:%M:%S")
-                #event_start = parser.isoparse(start_str)
+                event_start = datetime.fromisoformat(start_str)
                 #event_start = dateutil.parser.parse(start_str)
                 if event_start.tzinfo is None:
                     event_start = pytz.utc.localize(event_start)
                 else:
                     event_start = event_start.astimezone(pytz.utc)
-
             except (ValueError, TypeError) as e:
-                print(f"Skipping invalid date format: {start_str} - Error: {e}")
                 continue  # skip if invalid format
+            embedding = embed_text(json.dumps(event))
 
-            # Optional: Check for duplicates before appending
-            if not CalendarEvent.objects.filter(event_start=event_start, summary=summary, user=request.user).exists():
-                event_instances.append(CalendarEvent(
-                    user=request.user,
-                    event_data=event,
-                    event_start=event_start,
-                    summary=summary
-                ))
+            #if not CalendarEvent.objects.filter(event_start=event_start, summary=summary, user=request.user).exists():
+            event_instances.append(CalendarEvent(
+                user=request.user,
+                event_data=event,
+                event_start=event_start,
+                embedding = embedding,
+                summary=summary
+            ))
 
 
 
@@ -300,36 +301,35 @@ def list_events(request):
 
 # Initialize OpenAI client
 # This client is used to interact with the OpenAI API for generating chat responses.
-# client = OpenAI(api_key=settings.OPENAI_API_KEY, organization=settings.OPENAI_ORG_ID)
-#
-#
-#
-# def compute_cosine_similarities(query_vector, matrix):
-#     if not matrix:
-#         return []
-#     query_vec = np.array(query_vector).reshape(1, -1)
-#     matrix_np = np.array(matrix)
-#     similarities = cosine_similarity(query_vec, matrix_np)[0]
-#     return similarities
+client = OpenAI(api_key=settings.OPENAI_API_KEY, organization=settings.OPENAI_ORG_ID)
 
-# def embed_text(text):
-#     result = client.Embedding.create(
-#         input=[text],
-#         model="text-embedding-ada-002"
-#     )
-#     return result['data'][0]['embedding']
+from sklearn.metrics.pairwise import cosine_similarity
+def compute_cosine_similarities(query_vector, matrix):
+    if not matrix:
+        return []
+    query_vec = np.array(query_vector).reshape(1, -1)
+    matrix_np = np.array(matrix)
+    similarities = cosine_similarity(query_vec, matrix_np)[0]
+    return similarities
 
-# def get_relevant_events(user, query_embedding):
-#     # Step 2: Retrieve past events with embeddings
-#     # This function retrieves past events for the user and computes their cosine similarity with the query embedding.
-#     relevant_context = "No events found."
-#     events = CalendarEvent.objects.filter(user=user, embedding__isnull=False)
-#     if events:
-#         embeddings = [event.embedding for event in events]
-#         similarities = compute_cosine_similarities(query_embedding, embeddings)
-#         top_indices = np.argsort(similarities)[-3:][::-1]
-#         events_list = list(events)
-#         top_events = [events_list[i] for i in top_indices]
-#         relevant_context = "\n".join([json.dumps(event.event_data) for event in top_events])
-#         return relevant_context
-#     return relevant_context
+def embed_text(text):
+    result = client.embeddings.create(
+        input=[text],
+        model="text-embedding-ada-002"
+    )
+    return result.data[0].embedding
+
+def get_relevant_events(user, query_embedding):
+    # Step 2: Retrieve past events with embeddings
+    # This function retrieves past events for the user and computes their cosine similarity with the query embedding.
+    relevant_context = "No events found."
+    events = CalendarEvent.objects.filter(user=user, embedding__isnull=False)
+    if events:
+        embeddings = [event.embedding for event in events]
+        similarities = compute_cosine_similarities(query_embedding, embeddings)
+        top_indices = np.argsort(similarities)[-3:][::-1]
+        events_list = list(events)
+        top_events = [events_list[i] for i in top_indices]
+        relevant_context = "\n".join([json.dumps(event.event_data) for event in top_events])
+        return relevant_context
+    return relevant_context

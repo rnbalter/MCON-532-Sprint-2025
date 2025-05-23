@@ -94,112 +94,74 @@
             font-size: 0.9rem;
             color: #4b5563;
         }
-        /*body {*/
-        /*    margin: 0;*/
-        /*    font-family: sans-serif;*/
-        /*    background-color: #eff6ff;*/
-        /*    height: 100vh;*/
-        /*    display: flex;*/
-        /*    flex-direction: column;*/
-        /*}*/
 
-        /*header {*/
-        /*    background-color: #2563eb;*/
-        /*    color: white;*/
-        /*    padding: 1rem;*/
-        /*    display: flex;*/
-        /*    justify-content: space-between;*/
-        /*    align-items: center;*/
-        /*}*/
+        #chat-history {
+            flex-grow: 1;
+            overflow-y: auto;
+            background-color: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
 
-        /*header h1 {*/
-        /*    margin: 0;*/
-        /*    font-size: 1.5rem;*/
-        /*}*/
+        .chat-message {
+            display: flex;
+            margin-bottom: 0.5rem;
+        }
 
-        /*header a {*/
-        /*    background-color: white;*/
-        /*    color: #2563eb;*/
-        /*    padding: 0.5rem 1rem;*/
-        /*    text-decoration: none;*/
-        /*    border-radius: 4px;*/
-        /*    font-weight: bold;*/
-        /*}*/
+        .chat-message.user {
+            justify-content: flex-end;
+        }
 
-        /*main {*/
-        /*    display: flex;*/
-        /*    flex-direction: column;*/
-        /*    flex-grow: 1;*/
-        /*    padding: 1rem;*/
-        /*}*/
+        .chat-message.ai {
+            justify-content: flex-start;
+        }
 
-        /*#chat-history {*/
-        /*    flex-grow: 1;*/
-        /*    overflow-y: auto;*/
-        /*    background-color: white;*/
-        /*    border-radius: 8px;*/
-        /*    padding: 1rem;*/
-        /*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
-        /*    margin-bottom: 1rem;*/
-        /*}*/
+        .message {
+            max-width: 70%;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+        }
 
-        /*.chat-message {*/
-        /*    display: flex;*/
-        /*    margin-bottom: 0.5rem;*/
-        /*}*/
+        .message.user {
+            background-color: #2563eb;
+            color: white;
+            text-align: right;
+        }
 
-        /*.chat-message.user {*/
-        /*    justify-content: flex-end;*/
-        /*}*/
+        .message.ai {
+            background-color: #dbeafe;
+            text-align: left;
+        }
 
-        /*.chat-message.ai {*/
-        /*    justify-content: flex-start;*/
-        /*}*/
+        form {
+            display: flex;
+            border-top: 1px solid #ccc;
+            background-color: #f1f5f9;
+            padding: 1rem;
+        }
 
-        /*.message {*/
-        /*    max-width: 70%;*/
-        /*    padding: 0.5rem 1rem;*/
-        /*    border-radius: 0.5rem;*/
-        /*}*/
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 0.5rem;
+            border: 1px solid #60a5fa;
+            border-right: none;
+            border-radius: 4px 0 0 4px;
+        }
 
-        /*.message.user {*/
-        /*    background-color: #2563eb;*/
-        /*    color: white;*/
-        /*    text-align: right;*/
-        /*}*/
+        button {
+            padding: 0.5rem 1rem;
+            border: none;
+            background-color: #2563eb;
+            color: white;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
 
-        /*.message.ai {*/
-        /*    background-color: #dbeafe;*/
-        /*    text-align: left;*/
-        /*}*/
-
-        /*form {*/
-        /*    display: flex;*/
-        /*    border-top: 1px solid #ccc;*/
-        /*    background-color: #f1f5f9;*/
-        /*    padding: 1rem;*/
-        /*}*/
-
-        /*input[type="text"] {*/
-        /*    flex-grow: 1;*/
-        /*    padding: 0.5rem;*/
-        /*    border: 1px solid #60a5fa;*/
-        /*    border-right: none;*/
-        /*    border-radius: 4px 0 0 4px;*/
-        /*}*/
-
-        /*button {*/
-        /*    padding: 0.5rem 1rem;*/
-        /*    border: none;*/
-        /*    background-color: #2563eb;*/
-        /*    color: white;*/
-        /*    border-radius: 0 4px 4px 0;*/
-        /*    cursor: pointer;*/
-        /*}*/
-
-        /*button:hover {*/
-        /*    background-color: #1d4ed8;*/
-        /*}*/
+        button:hover {
+            background-color: #1d4ed8;
+        }
     </style>
 </head>
 <body>
@@ -208,7 +170,7 @@
     <h1>Timely</h1>
     {% if user.is_authenticated %}
     <div>
-        <span>Welcome, {{ user.first_name }} {{ user.last_name }} </span>
+        <span>Welcome, {{ user.first_name }} {{ user.last_name }} !</span>
         <a href="/calendar/list">Events</a>
         <a href="/logout/">Logout</a>
     </div>
