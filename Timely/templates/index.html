@@ -5,15 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Chat AI</title>
     <style>
-        body {
-            margin: 0;
-            font-family: sans-serif;
-            background-color: #eff6ff;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
         header {
             background-color: #2563eb;
             color: white;
@@ -26,6 +17,7 @@
         header h1 {
             margin: 0;
             font-size: 1.5rem;
+            color: white;
         }
 
         header a {
@@ -35,13 +27,72 @@
             text-decoration: none;
             border-radius: 4px;
             font-weight: bold;
+            gap: 1rem;
         }
-
         main {
             display: flex;
             flex-direction: column;
             flex-grow: 1;
             padding: 1rem;
+        }
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background-color: #eff6ff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        ul.event-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li.event-item {
+            background-color: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .event-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .event-time {
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .event-link {
+            display: inline-block;
+            margin-top: 8px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .event-link:hover {
+            text-decoration: underline;
+        }
+
+        .attendee-list {
+            margin-top: 10px;
+            padding-left: 16px;
+        }
+
+        .attendee-list li {
+            font-size: 0.9rem;
+            color: #4b5563;
         }
 
         #chat-history {
@@ -116,10 +167,10 @@
 <body>
 
 <header>
-    <h1>Chat AI</h1>
+    <h1>Timely</h1>
     {% if user.is_authenticated %}
     <div>
-        <span>Welcome, {{ user.first_name }} {{ user.last_name }}! </span>
+        <span>Welcome, {{ user.first_name }} {{ user.last_name }} !</span>
         <a href="/calendar/list">Events</a>
         <a href="/logout/">Logout</a>
     </div>
